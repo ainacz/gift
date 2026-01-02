@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для тебя 💖</title>
+<style>
+* { box-sizing: border-box; }
+body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#ff9a9e,#fad0c4); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+.card { width:92%; max-width:420px; background:white; border-radius:24px; padding:28px 22px; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,.25); animation:appear .8s ease; }
+@keyframes appear { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+.heart { font-size:72px; animation:pulse 1.3s infinite; margin-bottom:10px; }
+@keyframes pulse { 0%{transform:scale(1);}50%{transform:scale(1.18);}100%{transform:scale(1);} }
+h1 { font-size:22px; margin:10px 0 18px; color:#d81b60; }
+p { font-size:13px; line-height:1.6; color:#444; margin-bottom:18px; }
+button { margin-top:10px; padding:14px 28px; font-size:16px; border:none; border-radius:30px; background:#ec407a; color:white; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,.25); transition:transform .2s; }
+button:hover { transform:scale(1.05); }
+.hidden { display:none; }
+
+/* Слайдер */
+.slider { position:relative; width:100%; max-width:380px; margin:20px auto 0; overflow:hidden; border-radius:16px; }
+.slides { display:flex; transition:transform .6s ease, opacity .6s ease; }
+.slides img { width:100%; border-radius:16px; flex-shrink:0; transition:transform .6s ease,opacity .6s ease; opacity:0; transform:scale(0.95);}
+.slides img.active { opacity:1; transform:scale(1);}
+.slider-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.7); border:none; border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:20px; }
+.prev { left:10px; } .next { right:10px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="heart">❤️</div>
+  <h1>Для тебя, Дашенька 💕</h1>
+  <p id="intro">Нажми кнопку ниже.<br>Я долго думал, как сказать это красиво.</p>
+  <p id="text" class="hidden">
+    Даш, с самого первого дня нашего знакомства...<br><br>
+    Люблю тебя❤️.<br><br>
+    <strong>С любовью, Долаанчик 💖</strong>
+  </p>
+  <button id="openBtn" onclick="openMessage()">Открыть 💌</button>
+  <button id="memoriesBtn" class="hidden" onclick="showSlider()">Воспоминания</button>
+
+  <div id="slider" class="slider hidden">
+    <button class="slider-btn prev" onclick="prevSlide()">❮</button>
+    <div class="slides" id="slidesContainer"></div>
+    <button class="slider-btn next" onclick="nextSlide()">❯</button>
+  </div>
+</div>
+
+<script>
+// === Записка ===
+function openMessage() {
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("text").classList.remove("hidden");
+  document.getElementById("openBtn").classList.add("hidden");
+  document.getElementById("memoriesBtn").classList.remove("hidden");
+}
+
+// === Слайдер ===
+let currentSlide = 0;
+const slidesContainer = document.getElementById("slidesContainer");
+
+// Настройки
+const totalPhotos = 17; // <- Укажи количество фото в папке images
+const folder = "images/"; // папка с фото
+const extension = "jpg";   // формат фото
+
+// Создание слайдов
+for(let i=1; i<=totalPhotos; i++){
+  const img = document.createElement('img');
+  img.src = folder + i + "." + extension;
+  img.alt = `Фото ${i}`;
+  if(i===1) img.classList.add('active');
+  slidesContainer.appendChild(img);
+}
+
+const slides = slidesContainer.children;
+
+// Показ слайдера
+function showSlider() { document.getElementById("slider").classList.remove("hidden"); }
+
+// Обновление активного слайда
+function updateSlider() {
+  for(let i=0;i<slides.length;i++){ slides[i].classList.remove('active'); }
+  slides[currentSlide].classList.add('active');
+}
+
+// Листаем назад
+function prevSlide() {
+  currentSlide = (currentSlide === 0) ? slides.length-1 : currentSlide-1;
+  updateSlider();
+}
+
+// Листаем вперёд
+function nextSlide() {
+  currentSlide = (currentSlide === slides.length-1) ? 0 : currentSlide+1;
+  updateSlider();
+}
+</script>
+</body>
+</html>
